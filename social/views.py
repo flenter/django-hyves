@@ -99,9 +99,11 @@ def get_user_authorization(request):
     except:
         print "Unexpected error:", sys.exc_info()[0]
         raise
+
+    print 
     url = genus.get_authorize_url(
     token,
-    "http://" + site.domain + "/authorized_redirect/"
+    "http://" + site.domain + reverse('authorized_redirect')
     )
         
         
