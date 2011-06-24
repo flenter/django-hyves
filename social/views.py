@@ -6,7 +6,6 @@ import pickle
 
 from django.shortcuts import render_to_response, redirect
 from django.http import HttpResponseRedirect
-from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.core.mail import mail_admins
 
@@ -85,6 +84,7 @@ def get_authorization_by_logintoken(request, logintoken):
 def get_user_authorization(request):
     """Redirects to the hyves page to ask for permission
     """
+    from django.conf iport settings
     consumer = OAuthConsumer(settings.CONSUMER_KEY, settings.CONSUMER_SECRET)
     
     genus = GenusApi(consumer, "2.0")
