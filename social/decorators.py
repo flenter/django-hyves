@@ -5,17 +5,12 @@ except ImportError:
     
     
 from django.contrib.auth import REDIRECT_FIELD_NAME
-from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
-from django.utils.decorators import available_attrs
 from django.utils.http import urlquote
 
 from django.conf import settings
 
 import pickle
-
-from genus.api import GenusApi
-from genus.oauth.consumer import OAuthConsumer
 
 from social.models import UserAssociation
 
@@ -64,14 +59,13 @@ def accesstoken_required(view_func, redirect_url = None, redirect_field_name = R
         
     @wraps(view_func)
     def _wrapped_view(request, *args, **kwargs):
-        #print request.session.keys()
+
         if request.user.is_authenticated():
             try:
                 access_token = UserAssociation.objects.select_related().get(user = request.user)
             except UserAssociation.DoesNotExist:
                 access_token = None
             
-            #print pickle.loads(request.session.get('accesstoken_user'))
             if access_token:
                 kwargs.update(
                     {
