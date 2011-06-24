@@ -20,7 +20,7 @@ from genus.api import GenusApi
 
 from social.utils import get_genus
 
-def index(request):
+def index(request, show_more = False):
     """Retrieve the index... currently also does a small API call
     """
     
@@ -35,18 +35,19 @@ def index(request):
         )
     context = {}
     
-    genus = get_genus()
-    
-    result = genus.do_method(
-        "media.getPublic",
-        {
-            "sorttype":"mostrespect",
-            'mediatype':'image',
-            'timespan':'day'
-        }
-    )
-    
-    context.update({'media': result['media']})
+    if show_more:
+        genus = get_genus()
+        
+        result = genus.do_method(
+            "media.getPublic",
+            {
+                "sorttype":"mostrespect",
+                'mediatype':'image',
+                'timespan':'day'
+            }
+        )
+        
+        context.update({'media': result['media']})
     
     return render_to_response('social/index.html', context)
     
