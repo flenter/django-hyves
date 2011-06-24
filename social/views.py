@@ -84,7 +84,7 @@ def get_authorization_by_logintoken(request, logintoken):
 def get_user_authorization(request):
     """Redirects to the hyves page to ask for permission
     """
-    from django.conf iport settings
+    from django.conf import settings
     consumer = OAuthConsumer(settings.CONSUMER_KEY, settings.CONSUMER_SECRET)
     
     genus = GenusApi(consumer, "2.0")
