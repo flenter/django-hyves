@@ -14,7 +14,6 @@ def get_genus():
     return genus
 
 
-import sys
 from random import Random
 
 def generate_password(passwordLength=8, alternate_hands=True):
