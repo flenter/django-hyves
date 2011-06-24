@@ -4,7 +4,7 @@ from django.db import models
 
 from django.contrib.auth.models import User
 
-from core.utils import generate_password
+from social.utils import generate_password
 
 class UserAssociationManager(models.Manager):
     """Manager for the UserAssociation model. Makes it easier to create/update an
@@ -41,7 +41,6 @@ class UserAssociationManager(models.Manager):
                 if created:
                     user.is_active = True
  
-                    from django.conf import settings
                     
                     user.set_password(db_token.get_password())
                     user.save()
