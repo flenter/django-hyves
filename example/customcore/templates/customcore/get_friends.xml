@@ -1,0 +1,9 @@
+<?xml version="1.0"?>{% load paging_extras %}
+<result status="ok" total_pages="{{paging.totalpages}}" current_page="{{paging.currentpage}}">{% paginate users from request as users per_page paging.page_size%}{% for user in users.objects %}
+	<user id="{{user.userid}}" friends_count="{{user.friendscount}}">
+		<first_name><![CDATA[{{user.firstname}}]]></first_name>
+		<last_name><![CDATA[{{user.lastname}}]]></last_name>
+		<img s="{{user.profilepicture.icon_large.src_small}}" m="{{user.profilepicture.icon_large.src_medium}}" l="{{user.profilepicture.icon_large.src}}"/>
+	</user>{% endfor %}
+</result>
+

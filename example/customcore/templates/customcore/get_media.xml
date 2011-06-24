@@ -1,0 +1,5 @@
+<?xml version="1.0"?>{% load paging_extras %}
+<result status="ok" total_pages="{{paging.totalpages}}" current_page="{{paging.currentpage}}">{% for image in media%}
+<img s="{{image.square_large.src}}" m="{{image.icon_medium.src}}" l="{{image.image_fullscreen.src}}"/>
+{% endfor%}
+</result>

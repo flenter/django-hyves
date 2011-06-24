@@ -1,0 +1,25 @@
+<!doctype HTML>
+<html>
+  <head><title>Hyves test</title></head>
+  <body>
+   <a href="{% url get_user_authorization%}">authorize user</a>
+   <h1>Authorized!</h1>
+   <p>
+    User id: {{access_token.userid}}<br/>
+    Methods: {{access_token.methods}}<br/>
+    <ul>
+      <li><a href="{% url do_method 'friends.get'%}">friends get</a></li>
+      <li><a href="{% url do_method 'users.get' %}">users.get</a></li>
+      <li><a href="{% url do_method 'users.getLoggedin'%}">users.getLoggedin</a></li>
+      <li><a href="{% url do_method 'users.getFriendsByLoggedinSorted'%}">users.getFriendsByLoggedinSorted</a></li>
+      <li><a href="/friends.html">Friends list</a></li>
+      <li><a href="/media.html">Get media</a></li>
+      <li><a href="/check_code.html">Check a code</a></li>
+      <li><a href="/submit_code.html">Submit code</a></li>
+      <li><a href="/upload_image.html">Upload an image</a></li>
+    </ul>
+    
+    {{result}}
+   </p>
+  </body>
+</html>

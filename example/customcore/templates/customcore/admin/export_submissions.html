@@ -1,0 +1,58 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_modify adminmedia%}
+
+{% block extrahead %}{{ block.super }}
+{% url admin:jsi18n as jsi18nurl %}
+<script type="text/javascript" src="{{ jsi18nurl|default:"../../../jsi18n/" }}"></script>
+{{ media }}
+{% endblock %}
+
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% admin_media_prefix %}css/forms.css" />{% endblock %}
+
+{% block coltype %}{% if ordered_objects %}colMS{% else %}colM{% endif %}{% endblock %}
+
+{% block bodyclass %}{{ opts.app_label }}-{{ opts.object_name.lower }} change-form{% endblock %}
+
+{% block breadcrumbs %}{% if not is_popup %}
+<div class="breadcrumbs">
+     <a href="../../../">{% trans "Home" %}</a> &rsaquo;
+     <a href="../../">{{ app_label|capfirst|escape }}</a> &rsaquo;
+     <a href="../">{{opts.verbose_name_plural|capfirst}}</a> &rsaquo;
+     {% trans 'Export data' %}
+</div>
+{% endif %}{% endblock %}
+{% block content %}
+<div class="content" class="colM">
+     <h1>{% trans 'Export data' %}</h1>
+<form method="post" action="">
+     {% csrf_token%}
+     <div>
+          
+     <fieldset class="module aligned">
+          {% for field in form %}
+     <div class="form-row {{field.html_name}}">
+          <div>
+               
+          {{field.label_tag}}
+                                {% if field.is_readonly %}
+                                    <p class="readonly">{{ field.contents }}</p>
+                                {% else %}
+                                    {{ field }}
+                                {% endif %}
+                                {% if field.errors %}{{ field.errors }}{% endif %}
+                                {% if field.field.field.help_text %}
+                                    <p class="help">{{ field.field.field.help_text|safe }}</p>
+                                {% endif %}
+          </div>
+     </div>
+     
+{% endfor %}          
+     </fieldset>
+     <div class="submit-row">
+       <input type="submit" value="{% trans 'export' %}" />
+     </div>
+     </div>
+</form>
+     
+</div>
+{% endblock %}

@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+    	<title>Dr Pepper - Superhero yourself!</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    	<meta name="description" content=""/>
+    	<meta name="keywords" content=""/>
+		<link type="text/css" rel="stylesheet" media="all" href="/media/styles/main.css"/> 
+	</head>
+	<body>
+		<script type="text/javascript">//<!--
+    		document.write('<div class="javascript">');
+      	//--></script>
+    	<div class="content">
+			<div id="flashcontent">
+				<div class="first_name">{{first_name}}</div>
+				<div class="last_name">{{last_name}}</div>
+				<div class="picture_s">{{image.square_large.src}}</div>
+				<div class="picture_m">{{image.icon_medium.src}}</div>
+				<div class="picture_l">{{image.image_fullscreen.src}}</div>
+			</div>
+		</div>
+		<script type="text/javascript" src="/media/scripts/dojo/dojo.js"></script>
+		<script type="text/javascript" src="/media/scripts/swfobject.js"></script>	
+		<script type="text/javascript" src="/media/scripts/swfmacmousewheel2.js"></script>	
+		<script type="text/javascript" src="/media/scripts/swfaddress.js"></script>
+		<script type="text/javascript" src="/media/scripts/swffit.js"></script>
+		<div id="fb-root"></div>
+		<script src="http://connect.facebook.net/en_US/all.js"></script>
+		<script type="text/javascript" src="/media/scripts/project_fb.js"></script>
+		<script type="text/javascript" src="/media/scripts/embedflash.js"></script>
+		<div id="hyves">
+			<script type='text/javascript' src='http://www.hyves.nl/precompiled/hyvesconnect.js'></script>
+			<script type='text/javascript'>Hyves.connect.blog({title: 'DrPepper - Superhero yourself', body:'Superhero yourself'});</script>
+			<script type="text/javascript">
+				function blogHyves(){
+					dojo.query("#hyves a").forEach(function(elm){
+						elm.onclick();
+					});
+				}
+			</script>
+		</div>
+		<script type="text/javascript">//<!--
+			document.write('</div>')
+	//--></script>
+	</body>
+</html>

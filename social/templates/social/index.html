@@ -1,0 +1,12 @@
+<!doctype HTML>
+<html>
+  <head><title>Hyves test</title></head>
+  <body>
+    <a href="{% url get_user_authorization%}">authorize user</a>
+
+    {% for item in media %}
+    <img src="{{ item.icon_extralarge.src}}" />
+    {{item.src}}
+    {% endfor %}
+  </body>
+</html>

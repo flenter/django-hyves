@@ -1,0 +1,16 @@
+<html>
+	<head>
+		<title>Get media</title>
+	</head>
+	<body>
+		{% for image in media%}
+        <img src="{{image.icon_extralarge.src}}"/>
+        {% endfor %}
+		<ul>
+			<li>Number of pages: {{paging.totalpages}}</li>
+			<li>current_page: {{paging.currentpage}}</li>
+			<li>total results: {{paging.totalresults}}</li>
+		</ul>
+		<a href="?page={{ paging.currentpage|add:1}}">next</a>
+    </body>
+</html>

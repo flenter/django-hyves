@@ -1,0 +1,72 @@
+"""Small library of util methods
+"""
+
+import urllib
+
+from oauth.utils import normalize_key_value_parameters, generate_base_string, \
+                        calculate_hmacsha1_signature
+
+
+
+class GenusURLOpener(urllib.FancyURLopener):
+    
+    def http_error_401(self, url, fp, errcode, errmsg, headers, data=None):
+        #print locals()        
+        pass
+
+
+def do_http_call(url, variables, do_post):
+    """Make the HTTP call.
+    Note exceptions can be raised should the HTTP status require it.
+    """
+    if type(variables) != str:
+        variables = urllib.urlencode(variables)
+        
+    opener = GenusURLOpener()
+    
+    if(do_post):
+        fh = opener.open(url, variables)
+    else:
+        url_call = url + '?' + variables
+        
+        fh = opener.open(url_call)
+        
+    result = fh.read()
+    
+    fh.close()
+    
+    return result
+
+def bool_to_string(bool):
+    """Converts a boolean to string (all lowercase)"""
+    if bool:
+        return 'true'
+    return 'false'
+    
+def string_to_bool(text):
+    """Converts a string to a boolean (not case sensitive).
+    
+    .. note::
+       only the value true (not case sensitive) results in a boolean value
+       True. All other values result in a False"""
+    if text.lower() == 'true':
+        return True
+    return False
+
+def calculate_oauth_signature(
+        http_method,
+        uri,
+        variables,
+        consumer_secret,
+        token_secret):
+    """Calculates the oauth signature"""
+    params = normalize_key_value_parameters(variables)
+    base_string = generate_base_string(http_method, uri, params)
+    return calculate_hmacsha1_signature(
+        base_string,
+        consumer_secret,
+        token_secret
+    )
+    
+    
+    

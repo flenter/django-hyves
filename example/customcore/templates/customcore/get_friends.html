@@ -1,0 +1,29 @@
+<html>
+	<head>
+		<title>Get friends</title>
+	</head>
+	<body>
+		{% load paging_extras %}
+		{% paginate users from request as users per_page paging.page_size%}
+
+		{% for user in users.objects %}
+		<div class="user">
+			Fullscreen:<br/>
+			<img src="{{user.profilepicture.icon_large.src}}" alt="{{user.firstname}} {{user.lastname}}"/><br/>
+			Medium<br/>
+			<img src="{{user.profilepicture.icon_large.src_medium}}" alt="{{user.firstname}} {{user.lastname}}"/><br/>
+			Small<br/>
+			<img src="{{user.profilepicture.icon_large.src_small}}" alt="{{user.firstname}} {{user.lastname}}"/><br/>
+			
+			<strong>{{user.firstname}}</strong> {{user.lastname}} ({{user.friendscount}})<br> 
+			{{user.nickname}}
+			<a href="/mail_to.html?ids={{user.userid}}">mail to</a>
+		</div>{% endfor %}
+		<ul>
+			<li>Number of pages: {{paging.totalpages}}</li>
+			<li>current_page: {{paging.currentpage}}</li>
+			<li>total results: {{paging.totalresults}}</li>
+		</ul>
+		{{users.paging}}
+	</body>
+</html>
