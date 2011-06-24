@@ -10,9 +10,6 @@ for dirpath, dirnames, filenames in os.walk('social'):
 
 print data_files
 
-files = []
-
-#print files
 try:
     from setuptools import setup, find_packages, Command
 except ImportError:
@@ -20,24 +17,12 @@ except ImportError:
     use_setuptools()
     from setuptools import setup, find_packages, Command
 
-from setuptools import findall
-files = findall()
-
-import os
-for f in files:
-  if '.svn' in os.path.split(f):
-    print 'bad!', f
-  else: f
-files = []
-
 install_requires = []
 
 try:
     __import__('uuid')
 except ImportError:
     install_requires.append('uuid')
-
-#files=["progressable/*"]
 
 packages = find_packages(exclude=('example', 'example.*'))
 
