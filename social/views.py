@@ -171,23 +171,7 @@ def get_authorized(
     """User is authorized, show generic overview
     """
     
-    result = genus.do_method(
-        "users.get",
-        {
-            "ha_responsefields":'profilepicture',
-            'userid': access_token.userid
-        },
-        access_token
-    )
-
-    profile = request.user.get_profile()
-    
     context = {
-        'first_name': result['user'][0]['firstname'],
-        'last_name': result['user'][0]['lastname'],
-        'access_token':access_token,
-        'picture_large':result['user'][0]['profilepicture']['image_fullscreen']['src'],
-        'image': result['user'][0]['profilepicture']
     }
     
     return render_to_response(
