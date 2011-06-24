@@ -1,0 +1,20 @@
+A port of the php library genus for the (dutch) social network site Hyves 
+
+It consists of 3 parts:
+* genus, genus.oauth (namespace) the port of the library
+* social, a basic django implementation including some decorators who 
+are the projects equivolent of login_required
+* example, a small django project using this.
+
+See the example project for all dependencies
+A port of the php library genus for the (dutch) social network site Hyves 
+
+It consists of 3 parts:
+* genus, genus.oauth (namespace) the port of the library
+* social, a basic django implementation including some decorators who 
+are the projects equivolent of login_required
+* example, a small django project using this.
+
+See the example project for all dependencies
+
+
