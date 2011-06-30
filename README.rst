@@ -11,8 +11,9 @@ See the example project for all dependencies.
 
 One important remark for people who want to integrate this with their own
 projects or want to play with the example project::
-don't forget to create a hyves api consumer_key and secret. You also need 
-to do this for the example project.
+
+ don't forget to create a hyves api consumer_key and secret. You also need 
+ to do this for the example project.
 
 Some more remarks for integrating the django enabled social part of this 
 package with your own project:
@@ -25,6 +26,6 @@ package with your own project:
   be used when loging in without a hyves generated logintoken (the flow you 
   probably will have when you are not running in an iframe).
 
-Note: ::
+Note::
  the flow with a popup enabled authorization is not fully tested (since 
  we never had the need for it).
