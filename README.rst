@@ -26,6 +26,7 @@ package with your own project:
   be used when loging in without a hyves generated logintoken (the flow you 
   probably will have when you are not running in an iframe).
 
-Note::
+
+Note:
  the flow with a popup enabled authorization is not fully tested (since 
  we never had the need for it).
