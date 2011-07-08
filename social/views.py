@@ -15,8 +15,6 @@ from django.contrib.auth import authenticate, login
 from social.models import UserAssociation
 from social.signals import social_user_authenticated
 from social.decorators import accesstoken_required, requesttoken_required
-from genus.oauth.consumer import OAuthConsumer
-from genus.api import GenusApi
 
 from social.utils import get_genus
 
@@ -86,11 +84,16 @@ def get_user_authorization(request):
     """Redirects to the hyves page to ask for permission
     """
     from django.conf import settings
-    consumer = OAuthConsumer(settings.CONSUMER_KEY, settings.CONSUMER_SECRET)
+
+    from social.utils import get_genus
+
+    genus = get_genus()
     
-    genus = GenusApi(consumer, "2.0")
-    
-    token = genus.retrieve_request_token(settings.CONSUMER_METHODS, "default")
+    token = genus.retrieve_request_token(
+            settings.CONSUMER_METHODS, 
+            getattr(settings, 'HYVES_EXPIRATION_TYPE', 'default')
+    )
+
     request.session['requesttoken_user'] = pickle.dumps(token)
     import sys
     try:
@@ -117,7 +120,9 @@ def get_user_authorized_popup(request, genus = None, requesttoken_user = None):
     """
     token = requesttoken_user
     
-    access_token = genus.retrieve_access_token(token)
+    from django.conf import settings
+
+    access_token = genus.retrieve_access_token(token, expiration_type= getattr(settings, 'HYVES_EXPIRATION_TYPE', 'default'))
     
     access_token, created = UserAssociation.objects.get_or_create_from_token(
             access_token
@@ -137,8 +142,13 @@ def get_user_authorized_redirect(
     useful page
     """
     token = requesttoken_user
+
+    from django.conf import settings
     
-    access_token = genus.retrieve_access_token(token)
+    access_token = genus.retrieve_access_token(
+            token, 
+    )
+
     userid = access_token.userid
     
     access_token, created = UserAssociation.objects.get_or_create_from_token(

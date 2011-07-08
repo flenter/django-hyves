@@ -182,6 +182,9 @@ CONSUMER_VERSION = '2.0'
 
 HYVES_AUTHORIZATION_URL = 'http://www.hyves.nl/api/authorize/'
 
+# optional setting. Sets the expiration type, note that not in all flows for retrieving a valid access token this setting is used
+HYVES_EXPIRATION_TYPE = 'default'
+
 SEND_TO_FRIEND_SUBJECT = 'A test send to a friend mail'
 
 CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'

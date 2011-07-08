@@ -8,8 +8,6 @@ for dirpath, dirnames, filenames in os.walk('social'):
   if not '__init__.py' in filenames and filenames:
     data_files.append([dirpath, [os.path.join(dirpath, f) for f in filenames]])
 
-print data_files
-
 try:
     from setuptools import setup, find_packages, Command
 except ImportError:
@@ -28,7 +26,7 @@ packages = find_packages(exclude=('example', 'example.*'))
 
 setup(
         name="django-hyves",
-        version="0.2.1",
+        version="0.2.2",
         description="Port of the hyves PHP library genus to python + basic django implementation",
         author="Jacco Flenter @ Secret Code Machine",
         author_email="jacco(_AT_)secretcodemachine.com",
