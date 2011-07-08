@@ -1,0 +1,23 @@
+Metadata-Version: 1.0
+Name: django-hyves
+Version: 0.2.1
+Summary: Port of the hyves PHP library genus to python + basic django implementation
+Home-page: https://github.com/flenter/django-hyves/
+Author: Jacco Flenter @ Secret Code Machine
+Author-email: jacco(_AT_)secretcodemachine.com
+License: BSD
+Description: 
+                A port of the php library genus for the (dutch) social network site Hyves 
+        
+                It consists of 3 parts:
+                * genus, genus.oauth (namespace) the port of the library
+                * social, a basic django implementation including some decorators who 
+                are the projects equivolent of login_required
+                * example, a small django project using this.
+        
+                See the example project for all dependencies
+                
+Keywords: Hyves,python,django,oauth,genus,social network
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: License :: OSI Approved :: BSD License
