@@ -34,7 +34,7 @@ class UtilsTestCase(unittest.TestCase):
             False
         )
 
-        self.assertTrue(result.count('cross-domain-policy')>0)
+        self.assertTrue(result.count('test=value')>0)
     
     def test_calculate_signatures(self):
         """Calculate and compare signatures. Including the tricky situations
@@ -83,8 +83,8 @@ class GenusApiTestCase(unittest.TestCase):
     """Test case to see if an api call can really be made
     """
     
-    CONSUMER_KEY = 'MzMwMl9JPo83Vt7DlywcI0hnOlAr'
-    CONSUMER_SECRET = 'MzMwMl82a7r6P8VJhs4RNMrpGDeN'
+    CONSUMER_KEY = 'x'
+    CONSUMER_SECRET = 'x'
     
     def setUp(self):
         self.consumer = OAuthConsumer(
