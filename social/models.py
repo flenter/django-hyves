@@ -64,7 +64,7 @@ class UserAssociation(models.Model):
     methods = models.TextField(max_length = 255, null = True)
     
     def expired(self):
-        return datetime.datetime.now() < self.expires
+        return datetime.datetime.now() > self.expires
     
     @property
     def key(self):
