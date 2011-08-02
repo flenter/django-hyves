@@ -1,4 +1,4 @@
-A port of the php library genus for the (dutch) social network site Hyves 
+A port of the php library genus (http://code.google.com/p/genusapis/) for the (Dutch) social network site Hyves 
 
 It consists of 3 parts:
 
