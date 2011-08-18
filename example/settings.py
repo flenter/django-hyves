@@ -81,7 +81,6 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'pagination.middleware.PaginationMiddleware',
     #'debug_toolbar.middleware.DebugToolbarMiddleware',
     'social.middleware.GenusExceptionMiddleware',
 )
@@ -96,8 +95,7 @@ TEMPLATE_DIRS = (
     # or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    os.path.join(SITE_ROOT, 'social', 'templates'),
-    os.path.join(SITE_ROOT, 'staf', 'templates'),
+    #os.path.join(SITE_ROOT, 'social', 'templates'),
     os.path.join(SITE_ROOT, 'customcore', 'templates'),
 )
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -114,11 +112,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 
 INSTALLED_APPS = (
-    'admin_tools',
-    'admin_tools.theming',
-    'admin_tools.menu',
-    'admin_tools.dashboard',
-
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -129,25 +122,17 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     
-    # BEGIN: added for django-sentry 
-    'indexer',
-    'paging',
-    'sentry',
-    'sentry.client',    
-    # END: added for django-sentry
-    
-    'django_extensions',
+#    'django_extensions',
     #'debug_toolbar',   
-    'djcelery',
+    #'djcelery',
     'south',
-    'reversion',
+    #'reversion',
     'django.contrib.staticfiles',
     'customcore',
     'social',
     'genus',
-    'staf',
     'core',
-    'generic_confirmation',
+    #'generic_confirmation',
 )
 AUTH_PROFILE_MODULE = 'social.ProfileInformation'
 
@@ -187,35 +172,6 @@ HYVES_EXPIRATION_TYPE = 'default'
 
 SEND_TO_FRIEND_SUBJECT = 'A test send to a friend mail'
 
-CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
-
-from celeryconfig import *
-
-import djcelery
-djcelery.setup_loader()
-
-#from cp  import *
-
-import logging
-from sentry.client.handlers import SentryHandler
-
-logger = logging.getLogger()
-# ensure we havent already registered the handler
-if SentryHandler not in map(lambda x: x.__class__, logger.handlers):
-    logger.addHandler(SentryHandler())
-
-    # Add StreamHandler to sentry's default so you can catch missed exceptions
-    logger = logging.getLogger('sentry.errors')
-    logger.propagate = False
-    logger.addHandler(logging.StreamHandler())
-    
-    logger = logging.getLogger('sentry')
-    logger.addHandler(SentryHandler())
-    
-    logger = logging.getLogger('genus.api')
-    logger.addHandler(SentryHandler())
-
-
-FRIENDS_LIST_CACHING = 60 * 5
+#FRIENDS_LIST_CACHING = 60 * 5
 
 HYVES_LIST_PAGE_SIZE = 150

@@ -15,7 +15,7 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     (r'^admin/', include(admin.site.urls)),
-    url(r'^admin_tools/', include('admin_tools.urls')),
+    #url(r'^admin_tools/', include('admin_tools.urls')),
     url(r'^authorized_redirect/',
         'social.views.get_user_authorized_redirect',
         name='authorized_redirect',),
@@ -45,7 +45,7 @@ urlpatterns = patterns('',
         'customcore.views.get_media',
     ),
     
-    (r'^sentry/', include('sentry.urls')),
+#    (r'^sentry/', include('sentry.urls')),
 
     url(r'^crossdomain.xml',
         TemplateView.as_view(template_name='crossdomain.xml')),

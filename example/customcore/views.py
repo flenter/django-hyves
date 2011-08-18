@@ -23,13 +23,10 @@ def get_friends(request, genus = None, access_token = None, use_xml = True):
     
     context = {}
     
-    if search:
-        friends_list = retrieve_friends(
-            access_token.user_id, 
-            run_synchronous = True,
-        )
-    else:
-        friends_list = retrieve_friends(access_token.user_id)
+    friends_list = retrieve_friends(
+        access_token.user_id, 
+        run_synchronous = True,
+    )
 
     if not search:
         relevant_friends = friends_list
