@@ -31,7 +31,11 @@ class UserAssociationManager(models.Manager):
         db_token.token = token.key
         db_token.secret = token.secret
         if(token.expiredate):
-            db_token.expires = datetime.datetime.fromtimestamp(token.expiredate)
+            try:
+                db_token.expires = datetime.datetime.fromtimestamp(token.expiredate)
+            except ValueError:
+                db_token.expires = datetime.datetime.now() + datetime.timedelta(days=10* 365)
+
         db_token.methods = token.methods
         
         if not db_token.id:
