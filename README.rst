@@ -18,6 +18,7 @@ projects or want to play with the example project::
     to do this for the example project.
 
 
+-------------------
 The example project
 -------------------
 
@@ -34,6 +35,7 @@ After this only three more steps need to be taken:
 One more thing, please set current site to the right domain in via the django admin.
 
 
+----
 Tips
 ----
 
