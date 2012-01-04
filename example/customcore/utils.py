@@ -4,10 +4,11 @@ from social.models import UserAssociation
 
 from social.utils import get_genus
 
-def retrieve_friends(from_user = ''):
+
+def retrieve_friends(from_user=''):
     """Retrieve a list of friends and stores it in the cache
     (it's also returned).
-    
+
     .. note::
       This method requires a valid access_token (UserAssociation instance).
     """
@@ -18,7 +19,7 @@ def retrieve_friends(from_user = ''):
 
     genus = get_genus()
 
-    access_token = UserAssociation.objects.get(user = user)
+    access_token = UserAssociation.objects.get(user=user)
 
     params = (
         {
@@ -39,7 +40,7 @@ def retrieve_friends(from_user = ''):
 
     if result['info']['currentpage'] < total_pages:
 
-        for i in range(2, total_pages+1):
+        for i in range(2, total_pages + 1):
             params = (
                 {
                     'sorttype': 'alphabetically',
@@ -56,7 +57,7 @@ def retrieve_friends(from_user = ''):
             users.extend(result['user'])
 
     user_info = []
-    
+
     for user in users:
         temp_info = {
                 'userid': user['userid'],
@@ -65,21 +66,21 @@ def retrieve_friends(from_user = ''):
                 'friendscount': user['friendscount'],
                 'profilepicture': {
                     'icon_large': {
-                        'src_medium' :
+                        'src_medium':
                             user['profilepicture']['square_extralarge']['src'],
-                        'src_small' :
+                        'src_small':
                             user['profilepicture']['square_large']['src'],
                     }
                 }
             }
 
-        if user['profilepicture'].has_key('image'):
+        if 'image' in user['profilepicture']:
             src = user['profilepicture']['image']['src']
-	else:
+
+        else:
             src = user['profilepicture']['icon_extralarge']
 
         temp_info['profilepicture']['src'] = src
         user_info.append(temp_info)
 
     return user_info
-

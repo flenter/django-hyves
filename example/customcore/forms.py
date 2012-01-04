@@ -16,6 +16,7 @@ from social.models import ProfileInformation
 
 logger = logging.getLogger()
 
+
 class CodeValidatingMixin(object):
     """Mixin object containing code validation logic
     """
@@ -26,9 +27,9 @@ class CodeValidatingMixin(object):
         data = self.cleaned_data['code']
 
         if not ActionCode.pubjects.filter(
-                    code__iexact = data
+                    code__iexact=data
                 ).exclude(
-                    used = True
+                    used=True
                 ).count():
             raise forms.ValidationError(
                 _('Code was not found or has already been used')
@@ -36,10 +37,12 @@ class CodeValidatingMixin(object):
 
         return data
 
+
 class CodeCheckForm(forms.Form, CodeValidatingMixin):
     """Simple form for checking codes
     """
-    code = forms.CharField(max_length = 8, min_length = 8)
+    code = forms.CharField(max_length=8, min_length=8)
+
 
 class NewsletterForm(DeferredForm, ModelForm):
     """Deferred form for confirmed newsletter subscribtions
@@ -75,13 +78,14 @@ class NewsletterForm(DeferredForm, ModelForm):
             subject,
             body,
             'no-reply@drpepper.nl',
-            recipient_list = [self.cleaned_data['related_submission'].email,],
+            recipient_list=[self.cleaned_data['related_submission'].email, ],
         )
+
 
 class SubmissionForm(CodeValidatingMixin, ModelForm):
     """Form for the real code information
     """
-    code = forms.CharField(max_length = 8, min_length = 8)
+    code = forms.CharField(max_length=8, min_length=8)
     newsletter = forms.NullBooleanField()
 
     class Meta():
@@ -90,8 +94,8 @@ class SubmissionForm(CodeValidatingMixin, ModelForm):
         model = Submission
         fields = [
             'code', 'first_name', 'preposition', 'last_name', 'street',
-            'number', 'email', 'zipcode', 'city', 'age','newsletter', 'comment',
-            'code'
+            'number', 'email', 'zipcode', 'city', 'age', 'newsletter',
+            'comment', 'code'
         ]
 
     @property
@@ -102,7 +106,7 @@ class SubmissionForm(CodeValidatingMixin, ModelForm):
            does_not_exist exception will be raised if a code doesn't exist
         """
         code = self.cleaned_data['code']
-        return ActionCode.pubjects.get(code = code)
+        return ActionCode.pubjects.get(code=code)
 
     def save(self, *args, **kwargs):
         """Store it in the database
@@ -124,17 +128,21 @@ class SubmissionForm(CodeValidatingMixin, ModelForm):
         self.instance.save(*args, **kwargs)
 
         if self.cleaned_data['newsletter']:
-            form = NewsletterForm({'related_submission':self.instance.id},
-            )
+            form = NewsletterForm(
+                    {
+                        'related_submission': self.instance.id
+                    },
+                )
+
             if form.is_valid():
                 form.save()
             else:
 
                 logger.error(
                     'Error: a Newsletter form is not valid',
-                    exc_info = sys.exc_info(),
-                    extra = {
-                        'data':{
+                    exc_info=sys.exc_info(),
+                    extra={
+                        'data': {
                             'from_form': self,
                             'submission instance id': self.instance.id,
                             'created form': form
@@ -143,24 +151,28 @@ class SubmissionForm(CodeValidatingMixin, ModelForm):
                 )
         return return_value
 
+
 class UploadImageForm(forms.Form):
     """Form to hold data for uploading to Hyves (tm)
     """
     title = forms.CharField()
     pimp_image = forms.FileField()
 
+
 class SelectDateForm(forms.Form):
     """Selecting a range of dates
     """
     start_date = forms.DateField(
-        widget = AdminDateWidget,
-        required = True,
-        initial = datetime.today)
+            widget=AdminDateWidget,
+            required=True,
+            initial=datetime.today
+        )
 
     end_date = forms.DateField(
-        widget = AdminDateWidget,
-        required = True,
-        initial = datetime.today)
+            widget=AdminDateWidget,
+            required=True,
+            initial=datetime.today
+        )
 
     def clean_end_date(self):
         """Validate the dates (end_date should be after start_date)
@@ -174,6 +186,7 @@ class SelectDateForm(forms.Form):
             )
 
         return end_date
+
 
 class PimpProfileForm(forms.ModelForm):
 

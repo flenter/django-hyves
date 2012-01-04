@@ -131,7 +131,7 @@ INSTALLED_APPS = (
     'customcore',
     'social',
     'genus',
-    'core',
+    'scm_core',
     #'generic_confirmation',
 )
 AUTH_PROFILE_MODULE = 'social.ProfileInformation'

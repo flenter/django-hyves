@@ -19,7 +19,6 @@ Contents:
 
    genus
    
-   core
    social
    staf
    

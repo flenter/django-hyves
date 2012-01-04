@@ -3,6 +3,7 @@ from django.contrib.admin import ModelAdmin
 
 from social.models import UserAssociation, ProfileInformation
 
+
 class UserAssociationAdmin(ModelAdmin):
     list_display = ('userid', 'user', 'expires')
 

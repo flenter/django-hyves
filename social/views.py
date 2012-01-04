@@ -18,68 +18,74 @@ from social.decorators import accesstoken_required, requesttoken_required
 
 from social.utils import get_genus
 
-def index(request, show_more = False):
+
+def index(request, show_more=False):
     """Retrieve the index... currently also does a small API call
     """
-    
+
     if request.GET.get('logintoken'):
         return redirect(
             reverse(
                 'social.views.get_authorization_by_logintoken',
-                kwargs = {
-                    'logintoken':request.GET.get('logintoken')
+                kwargs={
+                    'logintoken': request.GET.get('logintoken')
                     }
             ) + "?%s" % request.META['QUERY_STRING']
         )
     context = {}
-    
+
     if show_more:
         genus = get_genus()
-        
+
         result = genus.do_method(
             "media.getPublic",
             {
-                "sorttype":"mostrespect",
-                'mediatype':'image',
-                'timespan':'day'
+                "sorttype": "mostrespect",
+                'mediatype': 'image',
+                'timespan': 'day'
             }
         )
-        
+
         context.update({'media': result['media']})
-    
+
     return render_to_response('social/index.html', context)
-    
+
+
 def get_authorization_by_logintoken(request, logintoken):
     """Redirect for users who do have a logintoken (i.e. a hyvertysing page)
     """
     genus = get_genus()
-    
+
     access_token = genus.retrieve_access_token_by_login(
         logintoken
     )
-    
+
     access_token, created = UserAssociation.objects.get_or_create_from_token(
             access_token
         )
-    
+
     user = authenticate(
-        username = access_token.user.username,
-        password = access_token.get_password())
-    
+        username=access_token.user.username,
+        password=access_token.get_password())
+
     if not user:
         mail_admins(
             'authenticate failure for: %s ' % access_token.user.username,
             'Faulty password? or user does not exist')
-        
+
     login(request, user)
-    
+
     social_user_authenticated.send(
-        sender = None,
-        user = user,
-        access_token = access_token)
-    
-    return HttpResponseRedirect(reverse('get_authorized') + "?%s" % request.META['QUERY_STRING'])
-    
+        sender=None,
+        user=user,
+        access_token=access_token)
+
+    return HttpResponseRedirect(
+            reverse('get_authorized') + \
+                "?%s" % request.META['QUERY_STRING']
+        )
+
+
 def get_user_authorization(request):
     """Redirects to the hyves page to ask for permission
     """
@@ -88,9 +94,9 @@ def get_user_authorization(request):
     from social.utils import get_genus
 
     genus = get_genus()
-    
+
     token = genus.retrieve_request_token(
-            settings.CONSUMER_METHODS, 
+            settings.CONSUMER_METHODS,
             getattr(settings, 'HYVES_EXPIRATION_TYPE', 'default')
     )
 
@@ -98,95 +104,97 @@ def get_user_authorization(request):
     import sys
     try:
         site = Site.objects.get_current()
-    
+
     except:
         print "Unexpected error:", sys.exc_info()[0]
         raise
 
-    print 
     url = genus.get_authorize_url(
     token,
     "http://" + site.domain + reverse('authorized_redirect')
     )
-        
-        
+
     return HttpResponseRedirect(url)
-    #return render_to_response('social/index.html', context)
 
 
 @requesttoken_required
-def get_user_authorized_popup(request, genus = None, requesttoken_user = None):
+def get_user_authorized_popup(request, genus=None, requesttoken_user=None):
     """Should open a popup.. unfortunately, this is not yet tested
     """
     token = requesttoken_user
-    
+
     from django.conf import settings
 
-    access_token = genus.retrieve_access_token(token, expiration_type= getattr(settings, 'HYVES_EXPIRATION_TYPE', 'default'))
-    
+    access_token = genus.retrieve_access_token(
+            token,
+            expiration_type=getattr(
+                settings,
+                'HYVES_EXPIRATION_TYPE',
+                'default'
+            )
+        )
+
     access_token, created = UserAssociation.objects.get_or_create_from_token(
             access_token
         )
-    
-    authenticate(username = access_token.user.username, nopass = True)
-    
+
+    authenticate(username=access_token.user.username, nopass=True)
+
     context = {}
-    
+
     return render_to_response('social/popup.html', context)
-    
+
+
 @requesttoken_required
 def get_user_authorized_redirect(
-        request, genus = None,
-        requesttoken_user = None):
+        request,
+        genus=None,
+        requesttoken_user=None):
     """User has authorized, so store the access token and redirect to a more
     useful page
     """
     token = requesttoken_user
 
-    from django.conf import settings
-    
     access_token = genus.retrieve_access_token(
-            token, 
+            token,
     )
 
-    userid = access_token.userid
-    
     access_token, created = UserAssociation.objects.get_or_create_from_token(
             access_token
         )
-    
+
     user = authenticate(
-        username = access_token.user.username,
-        password = access_token.get_password())
-    
+        username=access_token.user.username,
+        password=access_token.get_password())
+
     if not user:
         mail_admins(
             'authenticate failure for: %s ' % access_token.user.username,
             'Faulty password? or user does not exist')
-        
+
     login(request, user)
-    
+
     social_user_authenticated.send(
-        sender = None,
-        user = user,
-        access_token = access_token)
-    
+        sender=None,
+        user=user,
+        access_token=access_token)
+
     return HttpResponseRedirect(reverse('get_authorized'))
-    
+
 
 @accesstoken_required
 def get_authorized(
         request,
-        genus = None,
-        requesttoken_user = None,
-        access_token = None
+        genus=None,
+        requesttoken_user=None,
+        access_token=None
     ):
     """User is authorized, show generic overview
     """
-    
+
     context = {
     }
-    
+
     return render_to_response(
         (
             'customcore/authorized.html',
@@ -194,9 +202,8 @@ def get_authorized(
         ),
         context,
     )
-    
 
-    
+
 def get_invalid_session(request):
     """You should not be here: this is an error page. Should be used
     when a user is not logged in etc..
@@ -204,21 +211,27 @@ def get_invalid_session(request):
 
     mail_admins(
        'invalid session',
-       'An attempt to make an api based call was done without being logged in as a valid user.\n\
-        The user\'s name was: %s\n\
-        And the URL: %s\n\
-        with paramters: %s' % ( request.user, request.path_info, request.GET.urlencode())
+       """An attempt to make an api based call was done without being logged
+        in as a valid user.
+        The user\'s name was: %s\n
+        And the URL: %s\n
+        with paramters: %s""" % (
+            request.user,
+            request.path_info,
+            request.GET.urlencode()
+        )
     )
-    
+
     return render_to_response('social/invalid_session.html', {})
 
+
 @accesstoken_required
-def do_method(request, method, genus = None, access_token = None):
+def do_method(request, method, genus=None, access_token=None):
     """Make an api call with method @param method
     """
-    
+
     params = {}
-    
+
     if(method == "users.getFriendsByLoggedinSorted"):
         params.update(
             {
@@ -227,8 +240,7 @@ def do_method(request, method, genus = None, access_token = None):
                 'ha_resultsperpage': 2,
             }
         )
-        
+
     response = genus.do_method(method, params, access_token)
-    
-    return render_to_response('social/authorized.html', {'result':response})
-    
+
+    return render_to_response('social/authorized.html', {'result': response})

@@ -1,5 +1,4 @@
 Django>=1.3.0
-#PIL>=1.1.7
 South>=0.7.3
 #celery>=2.2.4
 #djcelery
@@ -9,9 +8,8 @@ South>=0.7.3
 django-pagination>=1.0.7
 django-paging>=0.2.2
 django-reversion>=1.3.3
+-e hg+ssh://hg@bitbucket.org/flenter/django-scm_core#egg=django-scm_core
 #django-sentry>=1.6.5
 #feedparser>=5.0.1
 #poster>=0.8.0
 #python-memcached>=1.47
-#xlwt>=0.7.2
-#xlrt>=0.7

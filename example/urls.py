@@ -1,21 +1,15 @@
-from django.conf.urls.defaults import *
+from django.conf.urls.defaults import patterns, url, include
 from django.views.generic.base import TemplateView
 from django.conf.urls.static import static
-
-# Uncomment the next two lines to enable the admin:
 from django.contrib import admin
+
 admin.autodiscover()
 
 from django.conf import settings
 
 urlpatterns = patterns('',
 
-    # Uncomment the admin/doc line below to enable admin documentation:
-    # (r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
-    # Uncomment the next line to enable the admin:
     (r'^admin/', include(admin.site.urls)),
-    #url(r'^admin_tools/', include('admin_tools.urls')),
     url(r'^authorized_redirect/',
         'social.views.get_user_authorized_redirect',
         name='authorized_redirect',),
@@ -34,22 +28,21 @@ urlpatterns = patterns('',
     ),
     url(r'^friends.html',
         'customcore.views.get_friends',
-        {'use_xml':False},
+        {
+            'use_xml': False
+        },
     ),
     url(r'^media.html',
         'customcore.views.get_media',
-        {'use_xml':False}
+        {
+            'use_xml': False
+        }
     ),
-    
     url(r'^media.xml',
         'customcore.views.get_media',
     ),
-    
-#    (r'^sentry/', include('sentry.urls')),
-
     url(r'^crossdomain.xml',
         TemplateView.as_view(template_name='crossdomain.xml')),
-   
     url(r'^$', 'social.views.index'),
 
 ) + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT) \
