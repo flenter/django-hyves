@@ -31,9 +31,9 @@ to the right values. This works slightly different if you are a campaign on hyve
 with a special request token, in that case, hyves will determine the methods you will have access to.
 After this only three more steps need to be taken:
 
-1. run `python manage.py syncdb`
-2. run `python manage.py migrate`
-3. run `python manage.py runserver` and you are up and running.
+1. run ``python manage.py syncdb``
+2. run ``python manage.py migrate``
+3. run ``python manage.py runserver`` and you are up and running.
 
 One more thing, please set current site to the right domain in via the django admin.
 
