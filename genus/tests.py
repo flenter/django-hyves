@@ -11,21 +11,21 @@ from genus.oauth.consumer import OAuthConsumer
 class UtilsTestCase(unittest.TestCase):
     """Testing the utils library for any inconsistancies etc
     """
-    
+
     def test_bool_conversion(self):
         """Testing the boolean to string conversions
         """
-        
+
         self.assertEqual(bool_to_string(False), 'false')
         self.assertEqual(bool_to_string(True), 'true')
-        
+
         self.assertEqual(string_to_bool('false'), False)
         self.assertEqual(string_to_bool('true'), True)
-        
+
     def test_do_http_call(self):
         """Try to do an HTTP request
         """
-        
+
         result = do_http_call(
             'http://youtube.com/crossdomain.xml',
             {
@@ -35,11 +35,11 @@ class UtilsTestCase(unittest.TestCase):
         )
 
         self.assertTrue(result.count('test=value')>0)
-    
+
     def test_calculate_signatures(self):
         """Calculate and compare signatures. Including the tricky situations
         """
-        
+
         self.assertEqual(
             calculate_oauth_signature(
                 'http://data.hyves.nl/',
@@ -52,7 +52,7 @@ class UtilsTestCase(unittest.TestCase):
             ),
             'AD7pfDU3JJNsaXZW4uGccTt0Mj8='
         )
-        
+
         self.assertEqual(
             calculate_oauth_signature(
                 'POST',
@@ -64,7 +64,7 @@ class UtilsTestCase(unittest.TestCase):
                 'oauth_token_secret'),
             'HPcbjA9VIzxoQDRYGnOVWGpyMec='
         )
-        
+
         self.assertEqual(
             calculate_oauth_signature(
                 'POST',
@@ -77,23 +77,23 @@ class UtilsTestCase(unittest.TestCase):
             ),
             '3pKzqGPLUmQ4jF5QuirKSQFyVtU='
         )
-        
+
 
 class GenusApiTestCase(unittest.TestCase):
     """Test case to see if an api call can really be made
     """
-    
+
     CONSUMER_KEY = 'x'
     CONSUMER_SECRET = 'x'
-    
+
     def setUp(self):
         self.consumer = OAuthConsumer(
             GenusApiTestCase.CONSUMER_KEY,
             GenusApiTestCase.CONSUMER_SECRET
         )
-        
+
         self.genus_api = GenusApi(self.consumer, "2.0")
-        
+
     def test_do_method(self):
         """Make an API call to the server.
         """
@@ -105,8 +105,8 @@ class GenusApiTestCase(unittest.TestCase):
                 'timespan':'day'
             }
         )
-        
-        self.assertTrue(len(respone) > 0)
-        
+        self.assertTrue(len(response) > 0)
+
+
 if __name__ == '__main__':
     unittest.main()

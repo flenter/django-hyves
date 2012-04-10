@@ -21,7 +21,7 @@ def normalize_parameters(param):
     
     param = sorted(param, key = lambda item : u"%s %s" % (item['key'], item['value']))
     
-    encoded_vars = []
+    #encoded_vars = []
     
     return_string = ''
     for item in param:
