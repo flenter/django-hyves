@@ -1,3 +1,6 @@
+"""
+Unit tests for the Genus/Hyves api
+"""
 import unittest
 
 from genus.utils import bool_to_string, string_to_bool

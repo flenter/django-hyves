@@ -2,17 +2,10 @@
 """
 
 import urllib
+from urllib import FancyURLopener
 
 from oauth.utils import normalize_key_value_parameters, generate_base_string, \
                         calculate_hmacsha1_signature
-
-
-
-class GenusURLOpener(urllib.FancyURLopener):
-    
-    def http_error_401(self, url, fp, errcode, errmsg, headers, data=None):
-        #print locals()        
-        pass
 
 
 def do_http_call(url, variables, do_post):
@@ -22,18 +15,18 @@ def do_http_call(url, variables, do_post):
     if type(variables) != str:
         variables = urllib.urlencode(variables)
         
-    opener = GenusURLOpener()
+    opener = FancyURLopener()
     
     if(do_post):
-        fh = opener.open(url, variables)
+        fhandle = opener.open(url, variables)
     else:
         url_call = url + '?' + variables
         
-        fh = opener.open(url_call)
+        fhandle = opener.open(url_call)
         
-    result = fh.read()
+    result = fhandle.read()
     
-    fh.close()
+    fhandle.close()
     
     return result
 
@@ -67,6 +60,3 @@ def calculate_oauth_signature(
         consumer_secret,
         token_secret
     )
-    
-    
-    

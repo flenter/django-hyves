@@ -17,6 +17,7 @@ from social.signals import social_user_authenticated
 from social.decorators import accesstoken_required, requesttoken_required
 
 from social.utils import get_genus
+from genus.api import get_authorize_url
 
 
 def index(request, show_more=False):
@@ -109,7 +110,7 @@ def get_user_authorization(request):
         print "Unexpected error:", sys.exc_info()[0]
         raise
 
-    url = genus.get_authorize_url(
+    url = get_authorize_url(
     token,
     "http://" + site.domain + reverse('authorized_redirect')
     )

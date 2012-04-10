@@ -1,4 +1,5 @@
-"""Generic API module. This is the core logic for any Hyves communication
+"""
+Generic API module. This is the core logic for any Hyves communication
 """
 import time
 import random
@@ -13,7 +14,6 @@ from genus.oauth import utils as oauth_util
 from genus.oauth.requesttoken import OAuthRequestToken
 from genus.oauth.accesstoken import OAuthAccessToken
 
-logger = logging.getLogger('genus.api')
 
 from genus.exceptions import GenusTransportError
 
@@ -29,6 +29,7 @@ class GenusApi():
     HTTP_TYPE_POST = 'POST'
     API_URL = 'http://data.hyves-api.nl/'
     AUTHORIZE_URL = 'http://www.hyves.nl/api/authorize/'
+    logger = logging.getLogger('genus.api')
 
     def __init__(self, consumer, ha_version):
         """Instantiate the GenusApi class. requires a OAuthConsumer
@@ -83,15 +84,14 @@ class GenusApi():
                 http_type == GenusApi.HTTP_TYPE_POST
             )
 
-        except IOError:#, exception:
-            pass
-            # TODO: add logging
+        except IOError, exception:
+            self.logger.exception(exception)
 
-        respJSONse = json.loads(response)
+        json_response = json.loads(response)
 
-        self.check_for_errors(respJSONse)
+        json_response = check_for_errors(json_response)
 
-        return respJSONse
+        return json_response
 
     def do_batch_methods(
             self,
@@ -149,31 +149,26 @@ class GenusApi():
             response['oauth_token_secret']
         )
 
-    def get_authorize_url(self, oauth_request_token, callback = None):
-        """Returns the url to authorize the user (based on the
-        GenusAPI.AUTHORIZE_URL)
-        """
-        url = GenusApi.AUTHORIZE_URL + "?oauth_token=" + oauth_request_token.key
-
-        if callback:
-            url += "&oauth_callback=" + oauth_util.urlencode_RFC3986(callback)
-
-        return url
-
     def retrieve_access_token(self, oauth_request_token):
         """Make the API call to retrieve an accesstoken
         Object returned is an OAuthAccessToken
         """
         response = self.do_method("auth.accesstoken", {}, oauth_request_token)
 
-        return OAuthAccessToken(
+        token = OAuthAccessToken(
                 response['oauth_token'],
                 response['oauth_token_secret'],
                 response['userid'],
-                response['methods'],
-                response['expiredate'],
                 )
+
+        token.methods = response['methods']
+        token.expiredate = response['expiredate']
+
+        return token
+
     def retrieve_access_token_by_login(self, token):
+        """Get a nice oauth token based on a logintoken
+        """
         response = self.do_method(
             'auth.accesstokenByLogintoken',
             {
@@ -181,29 +176,16 @@ class GenusApi():
             }
         )
 
-        return OAuthAccessToken(
+        token = OAuthAccessToken(
             response['oauth_token'],
             response['oauth_token_secret'],
             response['userid'],
-            response['methods'],
-            response['expiredate'],
         )
 
-    def check_for_errors(self, response):
-        """Check the response of the hyves API call
-        """
-        if response.has_key('error_code'):
+        token.methods = response['methods']
+        token.expiredate = response['expiredate']
 
-            error_code = response.get('error_code')
-
-            method = 'unknown'
-            for parameter in response['request_parameters']['parameter']:
-                if parameter['requestkey'] == 'ha_method':
-                    method = parameter['requestvalue']
-
-            error_code = response['error_code']
-
-            raise GenusTransportError(method, error_code)
+        return token
 
     def get_oauth_timestamp(self):
         """Generate an oauth timestamp.
@@ -227,3 +209,33 @@ class GenusApi():
         rand = random.randint(0, sys.maxint -1)
 
         return str(self.nonce) + "_" + ip_address + "_" + str(rand)
+
+
+def check_for_errors(response):
+    """Check the response of the hyves API call
+    """
+    if response.has_key('error_code'):
+
+        error_code = response.get('error_code')
+
+        method = 'unknown'
+        for parameter in response['request_parameters']['parameter']:
+            if parameter['requestkey'] == 'ha_method':
+                method = parameter['requestvalue']
+
+        error_code = response['error_code']
+
+        raise GenusTransportError(method, error_code)
+
+    return response
+
+def get_authorize_url(oauth_request_token, callback = None):
+    """Returns the url to authorize the user (based on the
+    GenusAPI.AUTHORIZE_URL)
+    """
+    url = GenusApi.AUTHORIZE_URL + "?oauth_token=" + oauth_request_token.key
+
+    if callback:
+        url += "&oauth_callback=" + oauth_util.urlencode_RFC3986(callback)
+
+    return url

@@ -31,7 +31,7 @@ packages = find_packages(exclude=('example', 'example.*'))
 
 setup(
         name="django-hyves",
-        version="0.2.3",
+        version="0.3.0",
         description=\
         "Port of PHP library 'genus' to python + basic django implementation",
         author="Jacco Flenter @ Secret Code Machine",
