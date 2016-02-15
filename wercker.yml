@@ -1,8 +1,6 @@
 box: python:slim
-
 build:
     steps:
-
         - script:
             name: awesome
             code: |
