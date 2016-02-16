@@ -4,6 +4,38 @@ build:
     steps:
 
         - script:
-            name: awesome
+            name: awesome 1
             code: |
+                sleep 10
                 echo "stuff"
+        - script:
+            name: awesome 2
+            code: |
+                sleep 10
+                echo "stuff"
+        - script:
+            name: awesome 3
+            code: |
+                sleep 10
+                echo "stuff"
+        - script:
+            name: awesome 4
+            code: |
+                sleep 10
+                echo "stuff"
+        - script:
+            name: awesome 5
+            code: |
+                sleep 10
+                echo "stuff"
+        - script:
+            name: awesome 6
+            code: |
+                sleep 10
+                echo "stuff"
+        - script:
+            name: awesome 7
+            code: |
+                sleep 10
+                echo "stuff"
+
